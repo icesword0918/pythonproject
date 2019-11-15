@@ -1,7 +1,5 @@
-height = 1.70
-print("您的身高：" + str(height))
-weight = 88.5
-print("您的体重：" + str(weight))
+height = float(input("请输入您的身高（单位为米）："))
+weight = float(input("请输入您的体重（单位为千克）："))
 bmi = weight / (height * height)
 print("您的BMI指数为：" + str(bmi))
 # 判断身材是否合理

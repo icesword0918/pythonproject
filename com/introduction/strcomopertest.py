@@ -56,3 +56,14 @@ print('原字符串：'+str8+'。')
 print('字符串:'+str8.strip('@.')+'。')
 
 # 格式化字符串
+template='编号：%09d\t公司名称： %s \t官网： http://www.%s.com'
+context1=(7,'百度','baidu')
+context2=(8,'明日学院','mingrisoft')
+print(template%context1)
+print(template%context2)
+
+template1='编号：{:0>9s}\t公司名称： {:s}\t官网： http://www.{:s}.com'
+context3=template1.format('7','百度','baidu')
+context4=template1.format('8','明日学院','mingrisoft')
+print(context3)
+print(context4)

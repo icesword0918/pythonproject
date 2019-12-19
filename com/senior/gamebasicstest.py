@@ -6,7 +6,7 @@ size=width,height=1024,768   # 设置窗口
 screen=pygame.display.set_mode(size)   # 显示窗口
 color=(0,0,0)   # 设置颜色
 
-ball = pygame.image.load("ball.png")  # 加载图片
+ball = pygame.image.load("..\\assets\\ball.png")  # 加载图片
 ballrect=ball.get_rect()   # 获取矩形区域
 
 speed=[5,5]  # 设置移动的x轴，y轴距离

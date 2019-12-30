@@ -84,3 +84,48 @@ print(df4["年龄"].apply(lambda x:x+1))  # 某一column或row中的元素执 �
 # print(df3.applymap(lambda x:x+1))  # 每一个元素执行相同的函数操作
 
 # 数据运算
+df5=pd.read_excel(r"..\assets\test.xlsx",sheet_name="Sheet4")
+print(df5["C1"]+df5["C2"])  # 两列相加
+print(df5["C1"]-df5["C2"])  # 两列相减
+print(df5["C1"]*df5["C2"])  # 两列相乘
+print(df5["C1"]/df5["C2"])  # 两列相除
+print(df5["C1"]+2)   # 列与常数加减乘除
+print(df5["C1"]-2)
+print(df5["C1"]*2)
+print(df5["C1"]/2)
+print(df5["C1"]>df5["C2"])   # 比较运算
+print(df5["C1"]!=df5["C2"])
+print(df5.count())   # 每列的非空值的个数
+print(df5.count(axis=1))  # 每一行的非空数值的个数
+print(df5.sum())   # 每列的求和结果
+print(df5.sum(axis=1))  # 每行的求和结果
+print(df5.mean())   # 每列的平均值
+print(df5.mean(axis=1))  # 每行的平均值
+print(df5.max())   # 每列的最大值
+print(df5.max(axis=1))  # 每行的最大值
+print(df5.min())   # 每列的最小值
+print(df5.min(axis=1))  # 每行的最小值
+print(df5.median())   # 每列的中位数
+print(df5.median(axis=1))  # 每行的中位数
+# print(df5.mode())   # 每列的众数
+# print(df5.mode(axis=1))  # 每行的众数
+print(df5.var())   # 每列的方差
+print(df5.var(axis=1))  # 每行的方差
+print(df5.std())   # 每列的标准差
+print(df5.std(axis=1))  # 每行的标准差
+print(df5.quantile(0.25))   # 每列的4分之一分位数
+print(df5.quantile(0.25,axis=1))  # 每行的4分之一分位数
+print(df5.corr())  # 表中各字段两两之间的相关性
+print(df5["C1"].corr(df5["C2"]))  # c1列与c2列之间的相关性
+
+
+# 时间序列
+from datetime import datetime
+print(datetime.now())  # 显示当前的日期和时间
+print(datetime.now().year)  # 返回当前时刻的年
+print(datetime.now().month)  # 返回当前时刻的月
+print(datetime.now().day)  # 返回当前时刻的日
+print(datetime.now().weekday()+1)  # 返回当前周几
+print(datetime.now().isocalendar())  # 返回当前时刻所在周数
+print(datetime.now().date())  # 返回当前时间只展示日期
+print(datetime.now().time())  # 返回当前时间只展示时间

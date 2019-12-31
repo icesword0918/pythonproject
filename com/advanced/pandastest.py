@@ -1,4 +1,7 @@
 import pandas as pd
+import  numpy as np
+from pandas.tseries.offsets import Day,Hour,Minute
+
 # Series数据结构
 S1=pd.Series(["a","b","c","d"])
 print(S1)
@@ -129,3 +132,60 @@ print(datetime.now().weekday()+1)  # 返回当前周几
 print(datetime.now().isocalendar())  # 返回当前时刻所在周数
 print(datetime.now().date())  # 返回当前时间只展示日期
 print(datetime.now().time())  # 返回当前时间只展示时间
+print(df[df["注册时间"]==datetime(2019,12,3)])   # 选取时间等于2019-12-03的人员
+cha=datetime(2019,5,21,19,50)-datetime(2019,5,18,20,32)  # 计算两个天之间的差
+print(cha)  # 显示差值
+print(cha.days)  # 显示天数差
+print(cha.seconds)  # 显示秒数差
+print(datetime(2019,12,12,20,32)+Day(1))  # 往后推1天
+print(datetime(2019,12,12,20,32)+Hour(1))  # 往后推1小时
+print(datetime(2019,12,12,20,32)+Minute(1))  # 往后推1分钟
+print(datetime(2019,12,12,20,32)-Minute(1))  # 往前推1分钟
+
+# 数据分组/数据透视表
+df6=pd.read_excel(r"..\assets\test.xlsx",sheet_name="Sheet5")
+print(df6.groupby("客户分类").count())  # 按照客户分类进行分组，进行计数运算
+print(df6.groupby("客户分类").sum())  # 按照客户分类进行分组，进行求和运算
+print(df6.groupby(["客户分类","区域"]).count())  # 按照客户分类、区域进行分组，进行计数运算
+print(df6.groupby("客户分类")["用户ID"].count())  # 在用户ID的基础上进行汇总计数
+print(df6.groupby([df6["客户分类"],df6["区域"]]).sum())  # 对分组以后的数据进行求和运算
+print(df6.groupby("客户分类").aggregate(["count","sum"]))  # aggregate使用多种汇总方式
+print(df6.groupby("客户分类").aggregate({"用户ID":"count","7月销量":"sum","8月销量":"sum"}))   # 针对不同的列做不同汇总运算
+df9=df6.groupby("客户分类").aggregate({"用户ID":"count","7月销量":"sum","8月销量":"sum"})
+df10=df6.groupby("客户分类").aggregate({"用户ID":"count","7月销量":"sum","8月销量":"sum"})
+print(df6.groupby("客户分类").sum().reset_index())    # 重置索引reset_index()方法
+print(pd.pivot_table(df6,values="用户ID",columns="区域",index="客户分类",aggfunc="count",margins=True,margins_name="总计",fill_value=0))   # 数据透视表
+print(pd.pivot_table(df6,values=["用户ID","7月销量"],columns="区域",index="客户分类",aggfunc={"用户ID":"count","7月销量":"sum"}).reset_index())  # 对不同的值进行不同的计算类型
+
+
+# 多表拼接
+dfs1=pd.read_excel(r"..\assets\test1.xlsx",sheet_name="Sheet1")
+dfs2=pd.read_excel(r"..\assets\test1.xlsx",sheet_name="Sheet2")
+dfs3=pd.read_excel(r"..\assets\test1.xlsx",sheet_name="Sheet3")
+dfs4=pd.read_excel(r"..\assets\test1.xlsx",sheet_name="Sheet4")
+dfs5=pd.read_excel(r"..\assets\test1.xlsx",sheet_name="Sheet5")
+print(pd.merge(dfs1,dfs2))  # 一对一表拼接
+print(pd.merge(dfs1,dfs3,on="学号"))   # 多对一拼接
+print(pd.merge(dfs4,dfs3))  # 多对多拼接
+print(pd.merge(dfs1,dfs4,on=["姓名","学号"]))  # 指定多个公共列
+print(pd.merge(dfs1,dfs2,left_on="学号",right_on="学号"))  # 实际值相同，列名不同的情况
+print(pd.merge(dfs1,dfs2,left_index=True,right_index=True))   # 连接用索引进行拼接
+print(pd.merge(dfs1,dfs5,on="学号",how="inner"))  # 两个表公共部分内连接
+print(pd.merge(dfs1,dfs5,on="学号",how="left"))  # 两个表公共部分左连接
+print(pd.merge(dfs1,dfs5,on="学号",how="right"))  # 两个表公共部分右连接
+print(pd.merge(dfs1,dfs5,on="学号",how="outer"))  # 两个表公共部分外连接
+print(pd.merge(dfs1,dfs5,on="学号",how="inner",suffixes=["_L","_R"]))  # 自定义重复的列名
+dfs6=pd.read_excel(r"..\assets\test1.xlsx",sheet_name="Sheet6").set_index("编号")
+dfs7=pd.read_excel(r"..\assets\test1.xlsx",sheet_name="Sheet7").set_index("编号")
+print(pd.concat([dfs6,dfs7]))  # 普通以列进行合并
+print(pd.concat([dfs6,dfs7],ignore_index=True))  # 重置索引进行合并
+print(pd.concat([dfs6,dfs7],ignore_index=True).drop_duplicates())  # 重复值处理
+
+# 结果导出
+# df9.to_excel(excel_writer=r"D:\测试文档.xlsx",sheet_name="测试文档",index=False,columns=["用户ID","7月销量"],encoding="utf-8")  # 导出excel
+# 插入多个sheet
+writer=pd.ExcelWriter("D:\测试.xlsx",engine="xlsxwriter")
+df9.to_excel(writer,sheet_name="表1")
+df10.to_excel(writer,sheet_name="表2")
+writer.save()
+
